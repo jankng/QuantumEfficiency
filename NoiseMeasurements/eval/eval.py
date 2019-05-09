@@ -1,7 +1,7 @@
 import numpy as np
 
 def fileToArray(i):
-	fileName = "Testzelle" + str(i) + ".txt"
+	fileName = "..\\Testzelle" + str(i) + ".txt"
 	f = open(fileName, "r")
 	lns = f.readlines()
 	return lns[3:]
