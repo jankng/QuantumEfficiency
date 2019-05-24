@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 
 REFERENZ = "ReferenzDSR.txt"
-SAMPLE = "PERC25.txt"
+SAMPLE = "../BiasRamps/PERC11V.txt"
 KALIBDATEI = "Kalibrierdatei.txt"
 AM15PATH = "../../GivenData/spectrum.csv"
 #JEXP = 37.02 #AlBSF
@@ -54,6 +54,7 @@ def makePlots():
 	plt.plot(referenz[0], referenz[1], marker='.')
 	plt.show()
 
+#returns s_ref in mA W-1 m2
 def getKalib():
 	kalib = fileToArray(KALIBDATEI, 24)
 	x = []
@@ -67,6 +68,7 @@ def getKalib():
 	ret = [x, y]
 	return ret
 
+#returns Spectral photon irradiance  (m-2s-1nm-1) 
 def getAM15():
 	fileName = AM15PATH
 	f = open(fileName, "r")
@@ -82,9 +84,10 @@ def getAM15():
 
 	return ret
 	
-def getCoefs():
+#returns R_test / R_ref w/o units
+def getCoefs(sampleFile):
 	referenz = getData(REFERENZ)
-	sample = getData(SAMPLE)
+	sample = getData(sampleFile)
 
 	Rref = []
 	Rspl = []
@@ -104,29 +107,32 @@ def getScaling(eqe, spectrum, jexp):
 	# computing scaling factor
 	integral = 0
 	for i in range(len(eqe[0]) - 1):
-		integral = integral + 1 * (spectrum[1][i]*eqe[1][i] + spectrum[1][i+1]*eqe[1][i+1]) / 2
+		integral = integral + 10 * (spectrum[1][i]*eqe[1][i] + spectrum[1][i+1]*eqe[1][i+1]) / 2
 
-	ret = jexp / (integral * 1.602e-19)
+	#remember to convert jexp from mA cm-2 to A m-2 -> jexp = jexp*10 in the next eqn
+	ret = 10*jexp / (integral * 1.602e-19)
 	#print(ret)
 	return ret
 
-def getRelativeEQE():
+#returns relative EQE no units
+def getRelativeEQE(sampleFile):
 
-	coefs = getCoefs()
+	coefs = getCoefs(sampleFile)
 	calib = getKalib()
 	eqe = [[], []]
 
-	konstante = 309.9250 #check unit of area (cm or m)
+	konstante = 3099.250936 #check unit of area (cm or m)
 	for i in range(len(coefs)):
 		eqe[0].append(calib[0][i])
 		eqe[1].append(calib[1][i] * coefs[i] * konstante / calib[0][i])
 		
 	return eqe
 
-def getAbsoluteEQE():
-	rel = getRelativeEQE()
+#returns absolute EQE no units
+def getAbsoluteEQE(sampleFile, jexp):
+	rel = getRelativeEQE(sampleFile)
 	spect = getAM15()
-	scale = getScaling(rel, spect, JEXP)
+	scale = getScaling(rel, spect, jexp)
 	for i in range(len(rel[1])):
 		rel[1][i] = rel[1][i] * scale
 	
@@ -135,7 +141,7 @@ def getAbsoluteEQE():
 def plotEQE(eqe):
 	axes = plt.gca()
 	axes.set_xlim([300, 1200])
-	axes.set_ylim([0, 1])
+	axes.set_ylim([0, 0.25])
 
 	plt.plot(eqe[0], eqe[1], marker='.')
 	#plt.plot(referenz[0], referenz[1], marker='.')
@@ -144,5 +150,10 @@ def plotEQE(eqe):
 
 	
 	
-eqe = getAbsoluteEQE()
-plotEQE(eqe)
+buffer = getData(SAMPLE)
+ref = [[], []]
+for i in range(len(buffer[1])):
+	ref[0].append(buffer[0][i])
+	ref[1].append(buffer[1][i] / buffer[2][i])
+	
+plotEQE(ref)
