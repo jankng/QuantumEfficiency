@@ -148,12 +148,16 @@ def plotEQE(eqe):
 	plt.show()
 
 
+def getAbsEQEErrs(sampleFile, jexp):
+	eqe = getAbsoluteEQE(sampleFile, jexp)
+	relerrs = [0.35768865800478594, 0.6031851453286338, 0.050121630903570295, 0.05006760686043129, 0.05000930361255885, 0.05002394779546438, 0.050041635379218574, 0.050028121793822516, 0.05009705404734112, 0.07593144016100795]
+	errs = []
 	
-	
-buffer = getData(SAMPLE)
-ref = [[], []]
-for i in range(len(buffer[1])):
-	ref[0].append(buffer[0][i])
-	ref[1].append(buffer[1][i] / buffer[2][i])
-	
-plotEQE(ref)
+	j = 0
+	for i in range(len(eqe[0])):
+		if i == 5 or ((i - 5) % 10 == 0 and i > 0):
+			j = j + 1
+			
+		errs.append(eqe[1][i] * relerrs[j])
+			
+	return [eqe[0], eqe[1], errs]

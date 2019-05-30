@@ -1,0 +1,98 @@
+%!TeX encoding=utf8
+\documentclass[ngerman, twocolumn]{scrartcl}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[ngerman]{babel}
+\usepackage{lmodern}
+\usepackage[expansion=true, protrusion=true]{microtype} %improved hyphenation
+\usepackage[locale=DE]{siunitx} %units
+\usepackage{url}
+\usepackage{graphicx}
+\usepackage[labelfont=bf]{caption}
+\captionsetup{format=plain}
+\usepackage{lipsum}
+
+% read documentation for KOMAScript providing the documentclass scrartcl
+\KOMAoptions{ 
+DIV=11,
+BCOR=0mm,
+paper=a4,
+fontsize=12pt,
+parskip=no,
+twoside=false,
+titlepage=false
+}
+
+%---Mathmatics (AMS packages )
+\usepackage{physics}
+\usepackage{amsmath} %generell math enviorments e.g. align
+\usepackage{amsfonts}
+\usepackage{amssymb} 
+\usepackage{amsthm} %math theorems
+\usepackage{upgreek}%provide special form of greek letters e.g. \upmu
+%\sisetup{per-mode=fraction,fraction-function=\sfrac}
+
+%Set linespacing (onehalfspacing,doublespacing)
+\usepackage[singlespacing]{setspace}
+
+% Header and Footer
+\usepackage[headsepline,automark,komastyle,nouppercase]{scrpage2}
+\clearscrheadings
+\pagestyle{scrheadings}
+\setlength{\headheight}{2.5\baselineskip}
+\ihead[]{Jan König (10004763) \\ Murtadja Fadel (........)}
+\ohead[]{Seite \thepage}
+
+\begin{document}
+\section*{Analysis of the Quantum Efficiency of Silicon Solar Cells}
+\section{Einführung}
+Ziel des Versuches war es, die Externe Quanteneffizienz (EQE) von zwei Solarzellen zu bestimmen und diese miteinander zu vergleichen. Bei der EQE handelt es sich um eine Größe, die das Verhältnis der entstandenen Ladungsträger zu der Anzahl der eingehenden Photonen einer bestimmen Wellenlänge $\lambda$ angibt. Die EQE ist somit ein Maß dafür, wie viel der durch die Sonne eingehenden Energie in nutzbare, elektrische Energie umgewandelt werden kann. Verglichen wurde eine Zelle vom Typ Al-BSF (aluminum back surface field) mit einer PERC (passive emitter and rear cell). Der wichtigste Unterschied der beiden Zellen ist die dielektrische Schicht der PERC, welche die Reflektion erhöhen und somit für verminderte elektrische und optische Verluste sorgen soll.
+
+\section{Vorgehen und Theorie}
+Während der Messung wurden die Zellen mit einer Bias Lampe bei einer Intensität von $\SI{300}{\watt\per\square\meter}$ bestrahlt. Die Lampe sendet das AM1.5G Spektrum aus, sodass die Messung unter standardisierten Messbedingungen (STC, standard testing conditions) erfolgen kann. Wichtig zu erwähnen ist, dass der Wert von $\SI{300}{\watt\per\square\meter}$ aus Zeitgründen als Näherung gewählt wurde, sodass nicht über einen Bereich von $0$ bis $\SI{1000}{\watt\per\square\meter}$ gemessen werden musste. (s. Anleitung)
+Um die EQE zu bestimmen wurde eine differentielle Messung vorgenommen. Hierbei wurde die entsprechende Zelle dauerhaft mit der Bias Lampe bestrahlt und zusätzlich mit einer Xenon- ($300$ bis $\SI{400}{\nano\meter}$) und Halogenlampe ($400$ bis $\SI{1200}{\nano\meter}$) monochromatisch beleuchtet. Das monochromatische Licht wurde durch ein Chopper Wheel moduliert, sodass nun die Änderung in der Kurzschlussstromdichte $\Delta j_{sc}$ über einen Tranzimpedanzwandler und einen Lock-In-Verstärker (eingestellt auf die Frequenz des Chopper Wheels) gemessen werden konnte. Zugleich wurde ein Teil des monochromatischen Lichts abgezweigt und auf eine Monitordiode gerichtet, sodass auch hier eine Veränderung in der Stromdichte $\Delta j_m$ gemessen werden konnte. Allerdings wurde gerätebedingt keine der beiden Stromdichten direkt gemessen, sondern lediglich ein Wert, welcher proportional zu den Stromdichten ist. Der Messwerte, welche in Abständen von $\SI{10}{\nano\meter}$ aufgenommen wurden, sind also
+\begin{equation}
+S(\lambda) = C \cdot \Delta j
+\end{equation}
+wobei C eine unbekannte Konstante ist. Zusätzlich wurden diese Werte auch bei einer Referenzzelle gemessen, welche im Vorfeld von der PTB Braunschweig kalibriert wurde, sodass nun mit den von der Referenzzelle gegebenen werten für die differentielle spektrale Responsivität (DSR) $\tilde{s}_{ref}(\lambda)$ über die Gleichung
+\begin{equation}
+\tilde{s}_{test}(\lambda) = \frac{R_{test}(\lambda)}{R_{ref}(\lambda)}\frac{C_{test}}{C_{ref}} \tilde{s}_{ref}(\lambda)
+\end{equation}
+die DSR der Testzelle bestimmt werden kann, wobei mit $R_{test/ref}(\lambda) = \frac{S_{test/ref}(\lambda)}{S_{m}(\lambda)}$ gemeint ist. Die relative EQE erhält man nun durch
+\begin{equation}
+EQE(\lambda) = s_{STC}(\lambda)\frac{hc}{qA\lambda}
+\end{equation}
+mit der Elementarladung $q$, der Lichtgeschwindigkeit $c$, der Planck Konstante $h$ und der Fläche $A$ der Zelle. Wichtig zu erwähnen ist, dass durch die $\SI{300}{\watt\per\square\meter}$ Näherung $s_{STC} \approx \tilde{s}_{test}$ gilt. Man kommt nun von der relativen zur absoluten EQE, indem man die Konstanten $C_{ref}$ bzw. $C_{test}$ eliminiert. Dies geschieht durch Multiplikation der relativen EQE mit dem Faktor
+\begin{equation}
+f_{sc} = \frac{j_{sc,exp}}{q\int_{\SI{300}{\nano\meter}}^{\SI{1200}{\nano\meter}} \dd{\lambda} \Phi_{0}(\lambda) EQE(\lambda)}
+\end{equation}
+Hierbei ist $\Phi_{0}(\lambda)$ das standardisierte Spektrum und das Integral wird zusammen mit den Messdaten numerisch in Python ausgerechnet.
+
+\section{Bestimmung der Unsicherheiten}
+Um das Signalrauschen, welches die DSR beeinflusst zu bestimmen, wurden jeweils 25 DSR Kurven für die Referenzzelle und die Al-BSF Zelle aufgenommen und die Standardabweichung um den Mittelwert für jede Wellenlänge in Abständen von $\SI{100}{\nano\meter}$ bestimmt. Auch wurde geschaut, wie sich verschiedene Positionen der Zelle abseits der optimalen Position (ca. $\SI{2}{\centi\meter}$ nach unten, links und rechts) auf die DSR Kurven auswirkt. Da bei der Eigentlichen Messung die Position der Testzelle niemals optimal ist, wird die Unsicherheit nach Betrachtung von Abb.~\ref{fig:positions} auf ca. $5\%$ geschätzt. Als optimale Position galt diejenige, welche eine Bestrahlung von $\SI{300}{\watt\per\square\meter}$ garantierte. Um eine solch eine Bestrahlung zu erhalten, wurde eine Spannung an der Bias Lampe angelegt, die einen Kurzschlussstrom von $I = \SI{42.54}{\milli\ampere}$ an der Referenzelle nach sich zog. Diesem Wert, welcher von der Kalibrierung der PTB stammt, wird eine nicht-signifikante (wenn auch unbekannte) Unsicherheit zugeordnet.
+
+\begin{figure}[h]
+\includegraphics[width=\columnwidth]{figures/positions}
+\caption{Auswirkung der Positionierung der Al-BSF Testzelle auf die DSR. Als Optimale Position galt diejenige, welche eine Bestrahlung von $\SI{300}{\watt\per\square\meter}$ ermöglicht. Die anderen Positionen sind um ca. $\SI{2}{\centi\meter}$ in die jeweilige Richtung verschoben.}
+\label{fig:positions}
+\end{figure}
+
+Des Weiteren ist es wichtig, die zeitliche Stabilität der Parameter zu betrachten. Es fiel z.B. auf, dass die Xenonlampe, welche für das Licht im violetten Bereich zuständig ist, auch nach einer langen Aufwärmzeit von über $\SI{30}{\minute}$ kein konstantes Signal ausgibt. Dies führt zu einer hohen Unsicherheit der Messwerte im violetten Bereich, welche durch die Standardabweichung erfasst wurde. Die Halogenlampe gab hingegen nach wenigen Sekunden ein konstantes Signal aus. Genauere Informationen sind im Messprotokoll vermerkt. Interessant ist auch zu wissen, ob die Bias Lampe ihre Beleuchtungsstärke über die Zeit des Versuchs hält. Durch die Referenzzelle konnte man feststellen, dass eine Spannung von $\SI{7338}{\milli\volt}$ zu der gewünschten Beleuchtung führt. An verschiedenen Tagen schwankte dieser Wert nur um wenige Millivolt. Aus den Messwerten der Bias Ramps wird ersichtlich, dass diese Schwankung keinen bedeutenden Einfluss auf die DSR bzw. EQE hat. Wenn man nun die Gauß'sche Fehlerfortpflanzung mit
+\begin{align}
+\frac{\Delta EQE}{EQE} &= \frac{\Delta\tilde{s}}{\tilde{s}} \\
+&= \sqrt{ \num{0.05}^2 + \sum_i \left( \frac{\Delta S_i}{S_i} \right)^2 }
+\end{align}
+wobei mit $\Delta S_i$ die Standardabweichung der einzelnen Messreihen gemeint ist, durchführt, stellt man fest, dass weitere kleinere Unsicherheiten, wie z.B. die Anzeigegenauigkeit von Messgeräten kaum noch ins Gewicht fallen und somit ignoriert werden können. (Abb.~\ref{fig:AlBSFvsPERC})
+
+\section{Ergebnisse und Diskussion}
+Im Mittelpunkt dieser Auswertung steht der Vergleich zwischen PERC und Al-BSF Zelle. In Abb.~\ref{fig:AlBSFvsPERC} sind die EQE Kurven beider Zellen zu sehen. Die hohen Schwankungen im Signal der Xenonlampe und die daraus resultierende Unsicherheit erlaubt keinen Vergleich bei violettem Licht. Da aber die Mittelwerte beider Zellen dennoch fast übereinander liegen, lässt sich vermuten, dass diese Werte bei beiden Zellen ähnlich sind. Im sichtbaren Wellenlängenbereich haben die Fehlerintervalle große Schnittbereiche. Somit lässt sich sagen, dass die EQEs der Zellen in Etwa gleich sind. Im infraroten Bereich lässt sich aus den disjunkten Fehlerbereichen sagen, dass die PERC definitiv eine höhere EQE als die Al-BSF Zelle aufweist. Die reflektive Schicht der PERC scheint in der Tat bei infraroten Wellenlängen zu tragen zu kommen.
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{figures/AlBSFvsPERC}
+\caption{Vergleich der EQE einer PERC (orange) und einer AlBSF (blau) Zelle bei Raumtemperatur ($\SI{25}{\celsius}$). Die Unsicherheiten bei violettem Licht erlauben keinen Vergleich. Bei sichtbaren Wellenlängen sind beide Zellen in Etwa gleich und bei infraroten Wellenlängen lässt sich eindeutig sagen, dass die PERC eine bessere Effizienz aufweist.}
+\label{fig:AlBSFvsPERC}
+\end{figure}
+
+
+
+\end{document}

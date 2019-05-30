@@ -64,7 +64,61 @@ def getNoise(fileName):
 		#print(round(avgSample[i], 5), end='\t')
 		#print(round(stdSample[i], 5), end='\t')
 		#print(round(avgMonitor[i], 5), end='\t')
+
 		#print(round(stdMonitor[i], 5))
 	
 	return [wavelengths, avgSample, stdSample, avgMonitor, stdMonitor]
 
+def readKalib(fileName, n):
+	with open(fileName, encoding="utf8", errors='ignore') as f:#f = open(fileName, "r")
+		lns = f.readlines()
+		return lns[n:]
+
+def getKalib():
+	kalib = readKalib("Kalibrierdatei.txt", 24)
+	
+	x = []
+	y = []
+	for i in range(len(kalib)):
+		if i % 20 == 0:
+			buffer = kalib[i].split("\t")
+			x.append(float(buffer[0]))
+			y.append(float(buffer[1]))
+	
+	ret = [x, y]
+	return ret
+
+def getDSRErrors():
+	sample = getNoise("Testzelle")
+	ref = getNoise("Referenz")
+	kalib = getKalib()
+	
+	wavelengths = []
+	for i in range(len(kalib[0])):
+		wavelengths.append(kalib[0][i])
+	
+	dsr = []
+	for i in range(len(kalib[0])):
+		Rtest = sample[1][i] / sample[3][i]
+		Rref = ref[1][i] / ref[3][i]
+		
+		dsr.append(Rtest / Rref * kalib[1][i])
+		
+	errs = []
+	for i in range(len(kalib[0])):
+		Sr = ref[1][i]
+		dSr = ref[2][i] * 1
+		Smr = ref[3][i]
+		dSmr = ref[4][i] * 1
+		
+		St = sample[1][i]
+		dSt = sample[2][i] * 1
+		Smt = sample[3][i]
+		dSmt = sample[4][i] * 1
+		
+		errs.append(np.sqrt((dSr / Sr)**2 + (dSmr / Smr)**2 + (dSt / St)**2 + (dSmt / Smt)**2 + 0.05**2))
+		
+	return [wavelengths, dsr, errs]
+
+test = getDSRErrors()
+print(test)
