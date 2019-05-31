@@ -11,6 +11,8 @@
 \usepackage[labelfont=bf]{caption}
 \captionsetup{format=plain}
 \usepackage{lipsum}
+\usepackage{subcaption}
+\sisetup{per-mode=fraction}
 
 % read documentation for KOMAScript providing the documentclass scrartcl
 \KOMAoptions{ 
@@ -40,11 +42,11 @@ titlepage=false
 \clearscrheadings
 \pagestyle{scrheadings}
 \setlength{\headheight}{2.5\baselineskip}
-\ihead[]{Jan König (10004763) \\ Murtadja Fadel (........)}
+\ihead[]{Jan König (10004763) \\ Murtadja Fadel (10006168)}
 \ohead[]{Seite \thepage}
 
 \begin{document}
-\section*{Analysis of the Quantum Efficiency of Silicon Solar Cells}
+\section*{Analyse der Quanteneffizienz von Solarzellen}
 \section{Einführung}
 Ziel des Versuches war es, die Externe Quanteneffizienz (EQE) von zwei Solarzellen zu bestimmen und diese miteinander zu vergleichen. Bei der EQE handelt es sich um eine Größe, die das Verhältnis der entstandenen Ladungsträger zu der Anzahl der eingehenden Photonen einer bestimmen Wellenlänge $\lambda$ angibt. Die EQE ist somit ein Maß dafür, wie viel der durch die Sonne eingehenden Energie in nutzbare, elektrische Energie umgewandelt werden kann. Verglichen wurde eine Zelle vom Typ Al-BSF (aluminum back surface field) mit einer PERC (passive emitter and rear cell). Der wichtigste Unterschied der beiden Zellen ist die dielektrische Schicht der PERC, welche die Reflektion erhöhen und somit für verminderte elektrische und optische Verluste sorgen soll.
 
@@ -85,13 +87,92 @@ Des Weiteren ist es wichtig, die zeitliche Stabilität der Parameter zu betracht
 wobei mit $\Delta S_i$ die Standardabweichung der einzelnen Messreihen gemeint ist, durchführt, stellt man fest, dass weitere kleinere Unsicherheiten, wie z.B. die Anzeigegenauigkeit von Messgeräten kaum noch ins Gewicht fallen und somit ignoriert werden können. (Abb.~\ref{fig:AlBSFvsPERC})
 
 \section{Ergebnisse und Diskussion}
-Im Mittelpunkt dieser Auswertung steht der Vergleich zwischen PERC und Al-BSF Zelle. In Abb.~\ref{fig:AlBSFvsPERC} sind die EQE Kurven beider Zellen zu sehen. Die hohen Schwankungen im Signal der Xenonlampe und die daraus resultierende Unsicherheit erlaubt keinen Vergleich bei violettem Licht. Da aber die Mittelwerte beider Zellen dennoch fast übereinander liegen, lässt sich vermuten, dass diese Werte bei beiden Zellen ähnlich sind. Im sichtbaren Wellenlängenbereich haben die Fehlerintervalle große Schnittbereiche. Somit lässt sich sagen, dass die EQEs der Zellen in Etwa gleich sind. Im infraroten Bereich lässt sich aus den disjunkten Fehlerbereichen sagen, dass die PERC definitiv eine höhere EQE als die Al-BSF Zelle aufweist. Die reflektive Schicht der PERC scheint in der Tat bei infraroten Wellenlängen zu tragen zu kommen.
+Im Mittelpunkt dieser Auswertung steht der Vergleich zwischen PERC und Al-BSF Zelle. In Abb.~\ref{fig:AlBSFvsPERC} sind die EQE Kurven beider Zellen zu sehen. Die hohen Schwankungen im Signal der Xenonlampe und die daraus resultierende Unsicherheit erlaubt keinen Vergleich bei violettem Licht. Da aber die Mittelwerte beider Zellen dennoch fast übereinander liegen, lässt sich vermuten, dass diese Werte bei beiden Zellen ähnlich sind. Im sichtbaren Wellenlängenbereich haben die Fehlerintervalle große Schnittbereiche. Somit lässt sich sagen, dass die EQEs der Zellen in Etwa gleich sind. Im infraroten Bereich lässt sich aus den disjunkten Fehlerbereichen sagen, dass die PERC definitiv eine höhere EQE als die Al-BSF Zelle aufweist. Die reflektive Schicht der PERC scheint in der Tat bei infraroten Wellenlängen zu tragen zu kommen. Beide Zellen folgen dem Trend, dass die EQE bei (ultra-) violettem Lich in etwa bei $50\%$ liegt, dieser aber mit steigender Wellenlänge auf fast $100\%$ ansteigt. Erst wenn die Wellenlänge sich dem fernen Infrarot nähert und die Energie der Photonen nicht mehr ausreicht, um die Bandlücke in der Zelle zu überwinden, fällt dieser Wert rapide auf $0\%$ ab.
 
 \begin{figure}
 \includegraphics[width=\columnwidth]{figures/AlBSFvsPERC}
 \caption{Vergleich der EQE einer PERC (orange) und einer AlBSF (blau) Zelle bei Raumtemperatur ($\SI{25}{\celsius}$). Die Unsicherheiten bei violettem Licht erlauben keinen Vergleich. Bei sichtbaren Wellenlängen sind beide Zellen in Etwa gleich und bei infraroten Wellenlängen lässt sich eindeutig sagen, dass die PERC eine bessere Effizienz aufweist.}
 \label{fig:AlBSFvsPERC}
 \end{figure}
+
+Als nächstes wurde untersucht, wie sich die Temperatur der PERC auf die EQE Kurven auswirkt. Hierzu wurde die EQE der PERC in $\SI{5}{\celsius}$ Schritten von $\SI{15}{\celsius}$ bis $\SI{40}{\celsius}$ gemessen, sodass der Temperaturkoeffizient definiert durch
+\begin{align}
+c_{EQE} &= \frac{1}{EQE}\pdv{EQE}{T} \\
+&\approx \frac{1}{EQE}\frac{\Delta EQE}{\Delta T}
+\end{align}
+berechnet werden kann. Legt man die EQE Kurven wie in Abb.~\ref{fig:TempEQEs} für alle Temperaturen übereinander, so fällt auf, dass kleine Veränderungen in der Temperatur keinen makroskopischen Einfluss auf die EQE nach sich ziehen. Erst wenn man sich den infraroten Bereich (Abb.~\ref{fig:TempEQEsZoom}) genauer anschaut, fällt auf, dass die EQE mit der Temperatur steigt. Würde man allerdings die Fehlerbalken aus Abb.~\ref{fig:AlBSFvsPERC} in die Grafik einfügen, so kann diese Aussage nur noch für größere Temperaturunterschiede getroffen werden. Bei sichtbarem Licht, das ohnehin schon für eine EQE von nahezu $100\%$ sorgt, liegen alle Graphen aufeinander. Die Ergebnisse im violetten Bereich sind nach wie vor nicht vergleichbar.
+
+\begin{figure}
+\begin{subfigure}{\columnwidth}
+\includegraphics[width=\columnwidth]{figures/TempEQEs}
+\caption{Gesamter Messbereich}
+\label{fig:TempEQEs}
+\end{subfigure}
+
+\begin{subfigure}{\columnwidth}
+\includegraphics[width=\columnwidth]{figures/TempEQEsZoom}
+\caption{Infrarote Wellenlängen}
+\label{fig:TempEQEsZoom}
+\end{subfigure}
+\caption{EQE Kurven der PERC für verschiedenen Temperaturen im Größenordnung der Raumtemperatur. Die Kurven wurden übereinander Gelegt. In (a) ist der gesamte Messbereich und in (b) ein Ausschnitt für infrarote Wellenlängen zu sehen. Im violetten Bereich ist aufgrund des Rauschens kein Vergleich möglich. Bei sichtbaren Wellenlängen hat die Temperatur keinen Einfluss und erst bei infraroten Wellenlängen ist zu sehen, dass sich ein Anstieg in der Temperatur leicht positiv auf die EQE auswirkt.}
+\end{figure}
+
+Berechnet man nun den Temperaturkoeffizienten (Abb.~\ref{fig:TempCoefs}), so wird noch einmal verdeutlicht, dass die Messwerte im violetten Bereich lediglich als Rauschen zu behandeln sind. Schaut man sich $c_{EQE}$ für sichtbare Wellenlängen an, wird noch einmal verdeutlicht, dass die EQE hier unabhängig von der Temperatur ist. Erst bei infraroten Wellenlängen steigt der Temperaturkoeffizient steil an. Wichtig zu beachten ist, dass für diese Berechnung die Fehlerintervalle der EQE Messung nicht berücksichtigt wurde, da diese große Schnittmengen haben und sonst kein Vergleich möglich wäre. Interessant ist auch, dass der Temperaturkoeffizient augenscheinlich nicht von $T$ selbst abhängig ist oder in anderen Worten: Eine Änderung von der Temperatur von $\Delta T$ zieht immer den den gleichen Einfluss auf die EQE nach sich unabhängig von $T$ (bei Temperaturen um die Raumtemperatur).
+
+\begin{figure}
+\includegraphics[width=\columnwidth]{figures/TempCoefs}
+\caption{Zu sehen ist der Temperaturkoeffizient $c_{EQE}$ der EQE der PERC für verschiedenen Wellenlängen und Temperaturen. Im violetten Bereich ist lediglich ein Rauschen zu vernehmen. Bei sichtbaren Wellenlängen ist $c_{EQE}\approx 0$ und erst bei infraroten Wellen ist ein Anstieg zu verzeichnen.}
+\label{fig:TempCoefs}
+\end{figure}
+
+Zuletzt wird noch die Linearität beider Testzellen untersucht. Eine Solarzelle gilt als linear, wenn der Zusammenhang zwischen Beleuchtung und Kurzschlussstrom ein linearer ist und die DSR von der Bestrahlung durch die Bias Lampe unabhängig ist. Letzteres Kriterium erlaubt eine Unterscheidung zwischen linear/nicht-linear nach Wellenlängen. Hierzu wurden sogenannte Bias Ramps aufgezeichnet. Die Spannung $U$ der Bias Lampe wurde dabei im Intervall von $\SI{4}{\volt}$ bis $\SI{12}{\volt}$ verstellt und der an der Zelle entstandene Kurzschlussstrom sowie die zugehörige DSR aufgezeichnet. Über die lineare Referenzzelle kann über einen Fit
+\begin{equation}
+I = \SI{1,4}{\milli\ampere\squared\per\volt\squared}\cdot U^2 - \SI{6,8}{\milli\ampere\per\volt}\cdot U + \SI{9}{\milli\ampere}
+\end{equation}
+die Bestrahlung
+\begin{equation}
+E(U) = \SI{1000}{\watt\per\square\meter} \cdot\frac{I(U)}{I(\SI{1000}{\watt\per\square\meter})}
+\end{equation}
+ermittelt werden. Wie man in Abb.~\ref{fig:linearities} sehen kann, sind beide Testzellen bei geringen Bestrahlungen mit dem Bias Licht durchaus linear. Erst wenn man sich den $\SI{1000}{\watt\per\square\meter}$ nähert, gibt es leichte Abweichungen bei der PERC, wohingegen die Al-BSF immer noch linear bleibt.
+
+\begin{figure}[h!]
+\begin{subfigure}{\columnwidth}
+\includegraphics[width=\columnwidth]{figures/PERClin}
+\caption{PERC; Fitparameter: $y = 0.17x+1.86$ mit $r^2 = 0.99$}
+\label{fig:PERClin}
+\end{subfigure}
+
+\begin{subfigure}{\columnwidth}
+\includegraphics[width=\columnwidth]{figures/AlBSFlin}
+\caption{AlBSF; Fitparameter: $y = 0.17x+0.45$ mit $r^2 = 0.99$}
+\label{fig:AlBSFlin}
+\end{subfigure}
+\caption{Zu sehen ist der Kurzschlussstrom, der von einer bestimmten Beleuchtung durch eine Bias Lampe (AM1.5G Spektrum) an einer PREC (a) und einer Al-BSF Zelle (b) verursacht wird. Eine Fitgerade zeigt inwiefern es sich hierbei um lineare Zellen handelt.}
+\label{fig:linearities}
+\end{figure}
+
+Schaut man sich die Bias Ramps an, so fällt bei beiden Zellen auf, dass die jeweilige Zelle sich bei sichtbarem Licht linear verhält, aber bei infrarotem Licht nicht mehr. Dieser Effekt kommt bei der PERC stärker zum Vorscheinen (Abb.~\ref{fig:ramps}), was die Beobachtung in Abb.~\ref{fig:linearities} bestätigt. Auffällig sind die $\SI{12}{\volt}$ Messreihen beider Zellen. Hier ist ein sehr starker Einbruch zu erkennen. Dass dies bei beiden Zellen auftritt, verstärkt den Verdacht, dass es sich hierbei nicht etwas um einen Messfehler handelt, sondern die Testzellen bei einer derart starten Bestrahlung gesättigt sind, sodass eine differentielle Messung, wie sie hier vorgenommen wurde, nicht mehr möglich ist.
+
+\begin{figure}
+\begin{subfigure}{\columnwidth}
+\includegraphics[width=\columnwidth]{figures/PERCramp}
+\caption{PERC}
+\label{fig:PERCramp}
+\end{subfigure}
+
+\begin{subfigure}{\columnwidth}
+\includegraphics[width=\columnwidth]{figures/AlBSFramp}
+\caption{AlBSF}
+\label{fig:AlBSFramp}
+\end{subfigure}
+\caption{Dargestellt sind die DSR Kurven einer PERC (a) und einer Al-BSF Zelle (b) unter verschiedenen Beleuchtungsstärken durch eine Bias Lampe (AM1.5G Spektrum). Die Messpunkte bei violetten Wellenlängen sind aufgrund des Signalrauschens der Leuchtquelle zu vernachlässigen. Darüber hinaus deutet ein Nicht-Übereinanderliegen der Messkurven auf eine nicht-linearität der Zelle hin. Die $\SI{12}{\volt}$ Kurve bildet hierbei eine Ausnahme, da hier beide Zellen vermutlich gesättigt waren.}
+\label{fig:ramps}
+\end{figure}
+
+\section{Ausblick}
+Dem Vergleich der Al-BSF Zelle mit der PERC wird eine große Bedeutung beigemessen, weil die PERC eine bedeutende Rolle in der Zukunft der Photovoltaik einnehmen soll. Die Aleo Solar GmbH bewirbt die PERC auf ihrer Website\footnote{\url{https://www.aleo-solar.com/perc-cell-technology-explained/}\\(Abrufdatum 31.05.2019)} mit einer höheren Effizienz bei einem deutlichen Einsparpotential in den Kosten trotz aufwendigerer Produktion im Vergleich zu anderen Solarzellen. Die höhere Effizienz konnte von uns besonders im infraroten Wellenlängenbereich nachgewiesen werden. Interessant wäre ein Vergleich beider Zellen bei (ultra-) violetten Wellenlängen. Darüber hinaus können alle weiteren Informationen, die es nicht mit in diese Auswertung geschafft haben (Rohe Messdaten, Python Code/Notebooks, Interaktive Grafiken), unter \url{https://github.com/jankng/QuantumEfficiency} eingesehen werden.
+
+
 
 
 
