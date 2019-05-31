@@ -1,25 +1,32 @@
 # QuantumEfficiency
 Messdaten zum Versuch "Quanteneffizienz von Solarzellen"
+
 In den einzelnen Ordnern sind ggf. Python Skripte/Notebooks enthalten, die zur Auswertung der Messdaten dienen.
 
-#EQEMeasurements
-##Bias Ramps
+EQEMeasurements
+===========
+## Bias Ramps
 Messdaten für die Biasramps
 
-##Temperature
+## Temperature
 Messdaten für die Temperaturabhängigkeit
 
-#GivenData
+GivenData
+======
 Daten die für die Auswertung bereitgestellt wurden (AM1.5G Spektrum, Kalibrierdatei)
 
-#InteractiveGraphs
+InteractiveGraphs
+=======
 Interaktive Graphen erstellt mit Plotly
 
-#Latex
+Latex
+======
 Enthält das .tex Dokument der Auswertung
 
-#NoiseMeasurements
+NoiseMeasurements
+======
 Messdaten, um das Rauschen auszuwerten
 
-#ParameterMeasurements
+ParameterMeasurements
+======
 Messdaten, um die Verschiebung der Zelle zu auszuwerten.
